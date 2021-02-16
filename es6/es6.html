@@ -1,0 +1,46 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-02-16 16:14:56
+ * @LastEditTime: 2021-02-16 16:56:12
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /fe-interview/es6/es6.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>es6</title>
+</head>
+<body>
+  <script>
+    // es5
+    // function People(x, y) {
+    //   this.x = x;
+    //   this.y = y;
+    // }
+    // People.prototype.toString = function() {
+    //   return '(' + this.x + ', ' + this.y + ')';
+    // }
+    // var a = new People(1, 2)
+    // console.log(a.toString(), a)
+    // es6
+    class People {
+      constructor(x, y) {
+        this.x = x
+        this.y = y
+      }
+      toString() {
+        return '(' + this.x + ', ' + this.y + ')';
+      }
+    }
+    var a = new People(1, 2)
+    console.log(a.toString(), a)
+    // console.log(new People(1, 2))
+    console.log(typeof People)
+    console.log(People === People.prototype.constructor)
+
+  </script>
+</body>
+</html>
