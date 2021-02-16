@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-16 16:14:56
- * @LastEditTime: 2021-02-16 16:56:12
+ * @LastEditTime: 2021-02-16 17:12:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /fe-interview/es6/es6.html
@@ -37,10 +37,13 @@
     }
     var a = new People(1, 2)
     console.log(a.toString(), a)
-    // console.log(new People(1, 2))
+    // ES6 的类，完全可以看作构造函数的另一种写法。
     console.log(typeof People)
     console.log(People === People.prototype.constructor)
-
+    console.log(a.hasOwnProperty('x')) // true
+    console.log(a.hasOwnProperty('y')) // true
+    console.log(a.hasOwnProperty('toString')) // false
+    console.log(a.__proto__.hasOwnProperty('toString')) // true
   </script>
 </body>
 </html>

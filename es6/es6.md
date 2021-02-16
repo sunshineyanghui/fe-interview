@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-16 16:13:12
- * @LastEditTime: 2021-02-16 16:57:55
+ * @LastEditTime: 2021-02-16 17:10:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings 
  * @FilePath: /fe-interview/es6/es6.md
@@ -55,6 +55,11 @@ console.log(a.toString(), a)
 // ES6 的类，完全可以看作构造函数的另一种写法。
 console.log(typeof People)
 console.log(People === People.prototype.constructor)
+console.log(a.hasOwnProperty('x')) // true
+console.log(a.hasOwnProperty('y')) // true
+console.log(a.hasOwnProperty('toString')) // false
+console.log(a.__proto__.hasOwnProperty('toString')) // true
+
 ```
 ![打印](../images/1613465809057.jpg)
 
