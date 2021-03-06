@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-06 20:01:25
- * @LastEditTime: 2021-03-06 21:31:15
+ * @LastEditTime: 2021-03-06 22:05:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /fe-interview/promise/promise.html
@@ -62,20 +62,20 @@
     // 注意一定要有返回值，否则，callback 将无法获取上一个 Promise 的结果。(如果使用箭头函数，() => x 比 () => { return x; } 更简洁一些，但后一种保留 return 的写法才支持使用多个语句。）。
     // catch的后续链式操作
     // 有可能在一个回调失败后继续使用链式操作，即，使用一个catch，这对于在链式操作中抛出一个失败之后，再次进行新的操作会很有用，
-    new Promise((resolve, reject) => {
-      console.log('初始化')
-      resolve()
-    })
-    .then(() => {
-      throw new error('有那里不对了')
-      console.log('执行这个')
-    })
-    .catch(() => {
-      console.log('执行那个')
-    })
-    .then(() => {
-      console.log('执行这个，无论前面发生了什么')
-    })
+    // new Promise((resolve, reject) => {
+    //   console.log('初始化')
+    //   resolve()
+    // })
+    // .then(() => {
+    //   throw new error('有那里不对了')
+    //   console.log('执行这个')
+    // })
+    // .catch(() => {
+    //   console.log('执行那个')
+    // })
+    // .then(() => {
+    //   console.log('执行这个，无论前面发生了什么')
+    // })
     // 输出结果：
     // 初始化
     // 执行“那个”
@@ -86,14 +86,14 @@
     // 错误传递
     // 在之前的回调地狱示例中，你可能记得有 3 次 failureCallback 的调用，而在 Promise 链中只有尾部的一次调用。
     // 通常，一遇到异常抛出，浏览器就会顺着 Promise 链寻找下一个 onRejected 失败回调函数或者由 .catch() 指定的回调函数。这和以下同步代码的工作原理（执行过程）非常相似。
-    try {
-      let result = syncDoSomething();
-      let newResult = syncDoSomethingElse(result);
-      let finalResult = syncDoThirdThing(newResult);
-      console.log(`Got the final result: ${finalResult}`);
-    } catch(error) {
-      failureCallback(error);
-    }
+    // try {
+    //   let result = syncDoSomething();
+    //   let newResult = syncDoSomethingElse(result);
+    //   let finalResult = syncDoThirdThing(newResult);
+    //   console.log(`Got the final result: ${finalResult}`);
+    // } catch(error) {
+    //   failureCallback(error);
+    // }
     // 在 ECMAScript 2017 标准的 async/await 语法糖中，这种异步代码的对称性得到了极致的体现：
     // async function foo() {
     //   try {
@@ -113,6 +113,68 @@
     // 我们可以发起并行操作，然后等多个操作全部结束后进行下一步操作，如下：
     // Promise.all([func1(), func2(), func3()])
     // .then(([result1, result2, result3]) => { /* use result1, result2 and result3 */ });
+    
+    // Promise.all可以将多个Promise实例包装成一个新的Promise实例。同时，成功和失败的返回值是不同的，成功的时候返回的是一个结果数组，而失败的时候则返回最先被reject失败状态的值
+    let p1 = new Promise((resolve, reject) => {
+      resolve('成功了')
+    })
+
+    let p2 = new Promise((resolve, reject) => {
+      resolve('success')
+    })
+
+    let p3 = Promise.reject('失败')
+
+    Promise.all([p1, p2]).then((result) => {
+      console.log(result)               //['成功了', 'success']
+    }).catch((error) => {
+      console.log(error)
+    })
+
+    Promise.all([p1,p3,p2]).then((result) => {
+      console.log(result)
+    }).catch((error) => {
+      console.log(error)      // 失败了，打出 '失败'
+    })
+    
+    let wake = (time) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(`${time / 1000}秒后醒来`)
+        }, time)
+      })
+    }
+
+    let p4 = wake(3000)
+    let p5 = wake(2000)
+
+    Promise.all([p4, p5]).then((result) => {
+      console.log(result)       // [ '3秒后醒来', '2秒后醒来' ]
+    }).catch((error) => {
+      console.log(error)
+    })
+
+    // 需要特别注意的是，Promise.all获得的成功结果的数组里面的数据顺序和Promise.all接收到的数组顺序是一致的，即p1的结果在前，即便p1的结果获取的比p2要晚。这带来了一个绝大的好处：在前端开发请求数据的过程中，偶尔会遇到发送多个请求并根据请求顺序获取和使用数据的场景，使用Promise.all毫无疑问可以解决这个问题。
+
+
+    let p6 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve('success')
+      },1000)
+    })
+
+    let p7 = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        reject('failed')
+      }, 500)
+    })
+
+    Promise.race([p6, p7]).then((result) => {
+      console.log(result)
+    }).catch((error) => {
+      console.log(error)  // 打开的是 'failed'
+    })
+    // 顾名思义，Promse.race就是赛跑的意思，意思就是说，Promise.race([p1, p2, p3])里面哪个结果获得的快，就返回那个结果，不管结果本身是成功状态还是失败状态。
   </script>
 </body>
 </html>
