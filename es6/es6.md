@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-16 16:13:12
- * @LastEditTime: 2021-02-16 17:10:23
+ * @LastEditTime: 2021-02-17 12:51:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings 
  * @FilePath: /fe-interview/es6/es6.md
@@ -63,3 +63,5 @@ console.log(a.__proto__.hasOwnProperty('toString')) // true
 ```
 ![打印](../images/1613465809057.jpg)
 
+## 2、模块化
+ES6 模块不是对象，而是通过export命令显式指定输出的代码，再通过import命令输入。
